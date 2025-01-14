@@ -100,4 +100,4 @@ erDiagram
 ## Contact
 프로젝트에 대한 질문이나 제안이 있다면 아래로 연락해주세요:
 
-- Email: nbhyun0329@gmail.com
+- Email: [nbhyun0329@gmail.com](mailto:nbhyun0329@gmail.com)
