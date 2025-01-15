@@ -9,9 +9,13 @@ router = APIRouter(prefix="/posts")
 
 def get_post_application_service():
     db = SessionLocal()
-    adapter = PostReposiotryImpl(db)
-    usecase = PostUseCase(adapter)
-    return PostApplicationService(usecase)
+    try:
+        adapter = PostReposiotryImpl(db)
+        usecase = PostUseCase(adapter)
+        service = PostApplicationService(usecase)
+        yield service
+    finally:
+        db.close()
 
 @router.post(path='', status_code=status.HTTP_201_CREATED)
 def create_post(post: Post, service: PostApplicationService = Depends(get_post_application_service)):
