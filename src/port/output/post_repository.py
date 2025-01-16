@@ -13,3 +13,7 @@ class PostRepository(ABC):
     @abstractmethod
     def find_by_id(self, post_id:str) -> Post:
         raise NotImplementedError
+    
+    @abstractmethod
+    def update_post_likes_by_id(self, post_id:str) -> None:
+        raise NotImplementedError

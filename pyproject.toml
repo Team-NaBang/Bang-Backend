@@ -13,7 +13,8 @@ dependencies = [
     "fastapi (>=0.115.6,<0.116.0)",
     "sqlalchemy (>=2.0.37,<3.0.0)",
     "cryptography (>=44.0.0,<45.0.0)",
-    "python-dotenv (>=1.0.1,<2.0.0)"
+    "python-dotenv (>=1.0.1,<2.0.0)",
+    "cachetools (>=5.5.0,<6.0.0)"
 ]
 
 
