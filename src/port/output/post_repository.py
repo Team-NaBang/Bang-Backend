@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from core.domain import Post
+from infrastructure.sqlalchemy.model import Post
 
 class PostRepository(ABC):
     @abstractmethod
