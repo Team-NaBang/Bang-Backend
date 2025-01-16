@@ -42,7 +42,6 @@ def create_post(post_create_request: PostCreateRequest, service: PostApplication
                 500: {"description": "Internal Server Error"}
             })
 def delete_post(post_id:str, authentication_code = Header(None, convert_underscores=False), service: PostApplicationService = Depends(get_post_application_service)):
-    print(authentication_code)
     try:
         service.delete_post(post_id, authentication_code)
         return {"message":"Post deleted successfully."}
