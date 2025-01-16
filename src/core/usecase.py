@@ -65,6 +65,4 @@ class PostUseCase(PostService):
                                 category=post.category)
     
     def add_like_post(self, post_id: str) -> None:
-        post = self.post_repository.find_by_id(post_id)
-        post.likes_count += 1
-        self.post_repository.save(post)
+        self.post_repository.update_post_likes_by_id(post_id)

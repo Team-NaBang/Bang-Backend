@@ -1,4 +1,5 @@
 from port.output.post_repository import PostRepository
+from sqlalchemy import update
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from infrastructure.sqlalchemy.model import Post as PostEntity
@@ -38,4 +39,19 @@ class PostRepositoryImpl(PostRepository):
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"An error occurred while working on the database: {str(e)}"
-            ) from e        
+            ) from e   
+    
+    def update_post_likes_by_id(self, post_id: str) -> None:
+        try:
+            sql = (
+                update(PostEntity)  
+                .where(PostEntity.id == post_id) 
+                .values(likes_count=PostEntity.likes_count + 1))
+            self.db.execute(sql)
+            self.db.commit()
+        except SQLAlchemyError as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"An error occurred while working on the database: {str(e)}"
+            ) from e   
