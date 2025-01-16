@@ -30,4 +30,4 @@ def create_post(post_create_request: PostCreateRequest, service: PostApplication
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error in request process: {str(e)}")
+            detail=f"Error in request process: {str(e)}") from e
