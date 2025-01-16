@@ -5,7 +5,7 @@ from infrastructure.sqlalchemy.model import Post as PostEntity
 from fastapi import HTTPException, status
 
 
-class PostReposiotryImpl(PostRepository):
+class PostRepositoryImpl(PostRepository):
     def __init__(self, db:Session) -> None:
         self.db = db
         
