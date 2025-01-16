@@ -116,7 +116,7 @@ def add_like_post(post_id:str, service: PostApplicationService = Depends(get_pos
     check_global_rate_limit()
     try:
         service.add_like_post(post_id)
-        return {"message":"Post deleted successfully."}
+        return {"message":"Added like successfully"}
     except HTTPException as http_ex:
         raise http_ex
     except Exception as e:
