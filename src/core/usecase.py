@@ -18,7 +18,7 @@ class PostUseCase(PostService):
     def __init__(self, post_repository:PostRepository) -> None:
         self.post_repository = post_repository
         
-    def create_post(self, post_create_request: PostCreateRequest) -> Post:
+    def create_post(self, post_create_request: PostCreateRequest) -> PostCreateResponse:
         if post_create_request.authentication_code != AUTHENTICATION_CODE:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Authentication code not correct.")
         
