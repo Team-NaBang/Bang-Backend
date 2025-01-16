@@ -7,9 +7,9 @@ class PostRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def delete_by_id(self, post_id) -> None:
+    def delete_by_id(self, post_id:str) -> None:
         raise NotImplementedError
     
     @abstractmethod
-    def find_by_id(self, post_id) -> Post:
+    def find_by_id(self, post_id:str) -> Post:
         raise NotImplementedError
