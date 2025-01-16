@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status, HTTPException, Header
 from core.usecase import PostUseCase
 from adapter.output.post_repository_impl import PostRepositoryImpl
 from infrastructure.sqlalchemy.config import SessionLocal
-from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest
+from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest, PostUpdateResponse, PostDetailResponse
 from port.input.post_app_service import PostApplicationService
 
 router = APIRouter(prefix="/posts")
@@ -58,7 +58,8 @@ def delete_post(post_id:str, authentication_code = Header(None, convert_undersco
                 403: {"description": "Authentication Code Error"},
                 404: {"description": "Post Not Found"},
                 500: {"description": "Internal Server Error"}
-            })
+            },
+            response_model=PostUpdateResponse)
 def update_post(post_id:str, post_update_request: PostUpdateRequest, service: PostApplicationService = Depends(get_post_application_service)):
     try:
         return service.update_post(post_id, post_update_request)
@@ -74,7 +75,8 @@ def update_post(post_id:str, post_update_request: PostUpdateRequest, service: Po
             responses={
                 404: {"description": "Post Not Found"},
                 500: {"description": "Internal Server Error"}
-            })
+            },
+            response_model=PostDetailResponse)
 def get_post_detail(post_id:str, service: PostApplicationService = Depends(get_post_application_service)):
     try:
         return service.get_post_detail(post_id)
