@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest, PostUpdateResponse
+from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest, PostUpdateResponse, PostDetailResponse
 
 class PostService(ABC):
     @abstractmethod
@@ -12,4 +12,8 @@ class PostService(ABC):
     
     @abstractmethod
     def update_post(self, post_id:str, post_update_request:PostUpdateRequest) -> PostUpdateResponse:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def get_post_detail(self, post_id:str) -> PostDetailResponse:
         raise NotImplementedError
