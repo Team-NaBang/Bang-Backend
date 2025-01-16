@@ -7,5 +7,5 @@ class PostService(ABC):
         raise NotImplementedError
     
     @abstractmethod
-    def delete_post(self, post_id) -> None:
+    def delete_post(self, post_id:str) -> None:
         raise NotImplementedError
