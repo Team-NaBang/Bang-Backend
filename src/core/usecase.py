@@ -63,3 +63,8 @@ class PostUseCase(PostService):
                                 created_at=post.created_at.strftime("%Y-%m-%d"),
                                 likes_count=post.likes_count,
                                 category=post.category)
+    
+    def add_like_post(self, post_id: str) -> None:
+        post = self.post_repository.find_by_id(post_id)
+        post.likes_count += 1
+        self.post_repository.save(post)
