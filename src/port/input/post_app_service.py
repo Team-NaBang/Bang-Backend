@@ -1,5 +1,5 @@
 from core.usecase import PostUseCase
-from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest, PostUpdateResponse
+from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest, PostUpdateResponse, PostDetailResponse
 from core.domain import Post
 
 class PostApplicationService:
@@ -14,3 +14,6 @@ class PostApplicationService:
         
     def update_post(self, post_id, post_update_request: PostUpdateRequest) -> PostUpdateResponse:
         return self.usecase.update_post(post_id, post_update_request)
+    
+    def get_post_detail(self, post_id) -> PostDetailResponse:
+        return self.usecase.get_post_detail(post_id)

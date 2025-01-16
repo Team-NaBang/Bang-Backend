@@ -1,5 +1,4 @@
 from core.domain import Post,Category
-from datetime import datetime
 from infrastructure.sqlalchemy.model import Post as PostEntity
 from pydantic import BaseModel, Field
 from typing import Annotated
@@ -22,7 +21,7 @@ class PostCreateResponse(BaseModel):
     title: str
     summary: str
     content: str
-    created_at: datetime
+    created_at: str
     likes_count: int
     category: str
     
@@ -37,19 +36,27 @@ class PostCreateResponse(BaseModel):
             likes_count=post.likes_count,
             category = post.category
         )
-        
+
 class PostUpdateRequest(BaseModel):
     title: Annotated[str | None, Field(default=None, min_length=1, max_length=255)]
     summary: Annotated[str | None, Field(default=None, min_length=1, max_length=255)]
     content: Annotated[str | None, Field(default=None, min_length=1, max_length=20000)]
     category: Annotated[Category | None, Field(None)]
     authentication_code: str
-    
+
 class PostUpdateResponse(BaseModel):
     id: str
     title: str
     summary: str
     content: str
-    created_at: datetime
+    created_at: str
+    likes_count: int
+    category: str
+
+class PostDetailResponse(BaseModel):
+    title: str
+    summary: str
+    content: str
+    created_at: str
     likes_count: int
     category: str

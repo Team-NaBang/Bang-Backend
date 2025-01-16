@@ -1,7 +1,7 @@
 from core.domain import Post
 from infrastructure.sqlalchemy.model import Post as PostEntity
 from fastapi import status, HTTPException
-from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest, PostUpdateResponse
+from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostDetailResponse, PostUpdateRequest, PostUpdateResponse
 from port.input.post_service import PostService
 from port.output.post_repository import PostRepository
 from dotenv import load_dotenv
@@ -54,3 +54,12 @@ class PostUseCase(PostService):
             post.category = post_update_request.category
         
         return self.post_repository.save(post)
+    
+    def get_post_detail(self, post_id: str) -> PostDetailResponse:
+        post = self.post_repository.find_by_id(post_id)
+        return PostDetailResponse(title=post.title,
+                                summary=post.summary,
+                                content=post.content,
+                                created_at=post.created_at.strftime("%Y-%m-%d"),
+                                likes_count=post.likes_count,
+                                category=post.category)

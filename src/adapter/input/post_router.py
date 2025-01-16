@@ -68,3 +68,19 @@ def update_post(post_id:str, post_update_request: PostUpdateRequest, service: Po
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Error in request process: {str(e)}") from e
+
+@router.get(path='/{post_id}',
+            status_code=status.HTTP_200_OK,
+            responses={
+                404: {"description": "Post Not Found"},
+                500: {"description": "Internal Server Error"}
+            })
+def get_post_detail(post_id:str, service: PostApplicationService = Depends(get_post_application_service)):
+    try:
+        return service.get_post_detail(post_id)
+    except HTTPException as http_ex:
+        raise http_ex
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error in request process: {str(e)}") from e
