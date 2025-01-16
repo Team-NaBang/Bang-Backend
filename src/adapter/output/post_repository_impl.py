@@ -19,4 +19,4 @@ class PostReposiotryImpl(PostRepository):
             self.db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An error occurred while working on the database.") from e
+            detail=f"An error occurred while working on the database: {str(e)}") from e
