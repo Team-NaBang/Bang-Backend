@@ -27,9 +27,7 @@ def get_post_application_service():
 def create_post(post_create_request: PostCreateRequest, service: PostApplicationService = Depends(get_post_application_service)):
     try:
         return service.create_post(post_create_request)
-    except HTTPException as e:
-        raise e
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e))
+            detail=f"Error in request process: {str(e)}")
