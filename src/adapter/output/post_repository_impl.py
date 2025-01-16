@@ -29,6 +29,25 @@ class PostRepositoryImpl(PostRepository):
         return post
 
     def delete_by_id(self, post_id) -> None:
+        """
+        Delete a post from the database by its unique identifier.
+        
+        Attempts to remove a specific post from the database using its post ID. 
+        First verifies the post's existence by calling `find_by_id`, then attempts 
+        to delete the post and commit the transaction.
+        
+        Parameters:
+            post_id (str): The unique identifier of the post to be deleted.
+        
+        Raises:
+            HTTPException: 
+                - 404 status if the post is not found (via find_by_id)
+                - 500 status if a database error occurs during deletion
+        
+        Side Effects:
+            - Commits the database transaction if deletion is successful
+            - Rolls back the transaction if an error occurs
+        """
         post = self.find_by_id(post_id)
 
         try:
@@ -42,6 +61,19 @@ class PostRepositoryImpl(PostRepository):
             ) from e   
     
     def update_post_likes_by_id(self, post_id: str) -> None:
+        """
+        Increments the likes count for a specific post by its ID.
+        
+        Attempts to update the likes count of a post in the database by incrementing the current likes count by one. 
+        If the post with the given ID does not exist or a database error occurs, an appropriate exception is raised.
+        
+        Args:
+            post_id (str): The unique identifier of the post to update.
+        
+        Raises:
+            HTTPException: A 500 Internal Server Error if a database operation fails, 
+                           with details about the specific error encountered.
+        """
         try:
             sql = (
                 update(PostEntity)  

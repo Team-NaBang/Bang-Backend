@@ -56,6 +56,24 @@ class PostUseCase(PostService):
         return self.post_repository.save(post)
     
     def get_post_detail(self, post_id: str) -> PostDetailResponse:
+        """
+        Retrieve detailed information about a specific blog post.
+        
+        Parameters:
+            post_id (str): Unique identifier of the post to retrieve details for
+        
+        Returns:
+            PostDetailResponse: A response object containing comprehensive details of the post, including:
+                - title (str): The title of the blog post
+                - summary (str): A brief summary of the post content
+                - content (str): Full content of the blog post
+                - created_at (str): Date of post creation in 'YYYY-MM-DD' format
+                - likes_count (int): Number of likes received by the post
+                - category (str): Category or classification of the post
+        
+        Raises:
+            HTTPException: If the post with the specified ID cannot be found
+        """
         post = self.post_repository.find_by_id(post_id)
         return PostDetailResponse(title=post.title,
                                 summary=post.summary,
@@ -65,4 +83,13 @@ class PostUseCase(PostService):
                                 category=post.category)
     
     def add_like_post(self, post_id: str) -> None:
+        """
+        Increment the number of likes for a specific blog post.
+        
+        Parameters:
+            post_id (str): The unique identifier of the post to receive a like.
+        
+        Raises:
+            HTTPException: If the post with the given ID cannot be found or updated.
+        """
         self.post_repository.update_post_likes_by_id(post_id)
