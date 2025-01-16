@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from core.usecase import PostUseCase
 from adapter.output.post_repository_impl import PostReposiotryImpl
 from infrastructure.sqlalchemy.config import SessionLocal
-from adapter.dto.PostDto import PostCreateRequest, PostCreateResponse
+from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse
 from port.input.post_app_service import PostApplicationService
 
 router = APIRouter(prefix="/posts")
@@ -20,8 +20,8 @@ def get_post_application_service():
 @router.post(path='', 
             status_code=status.HTTP_201_CREATED,
             responses={
-                403: {"description": "인증 코드가 올바르지 않음"},
-                500: {"description": "서버 내부 오류"}
+                403: {"description": "Authentication Code Error"},
+                500: {"description": "Internal Server Error"}
             },
             response_model=PostCreateResponse)
 def create_post(post_create_request: PostCreateRequest, service: PostApplicationService = Depends(get_post_application_service)):

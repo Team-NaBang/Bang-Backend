@@ -1,5 +1,5 @@
 from core.usecase import PostUseCase
-from adapter.dto.PostDto import PostCreateRequest, PostCreateResponse
+from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse
 from core.domain import Post
 
 class PostApplicationService:

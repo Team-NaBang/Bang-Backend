@@ -1,7 +1,7 @@
 from core.domain import Post
 from infrastructure.sqlalchemy.model import Post as PostEntity
 from fastapi import status, HTTPException
-from adapter.dto.PostDto import PostCreateRequest, PostCreateResponse
+from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse
 from port.input.post_service import PostService
 from port.output.post_repository import PostRepository
 import os
