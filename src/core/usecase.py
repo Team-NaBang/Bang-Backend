@@ -16,7 +16,7 @@ if not AUTHENTICATION_CODE:
     raise ValueError("AUTHENTICATION_CODE 환경 변수가 설정되지 않았습니다.")
 
 class PostUseCase(PostService):
-    def __init__(self, post_repository:PostRepository) -> PostCreateResponse:
+    def __init__(self, post_repository:PostRepository) -> None:
         self.post_repository = post_repository
         
     def create_post(self, post_create_request: PostCreateRequest) -> PostCreateResponse:
@@ -44,9 +44,13 @@ class PostUseCase(PostService):
         
         post:PostEntity = self.post_repository.find_by_id(post_id)
         
-        if post_update_request.title: post.title = post_update_request.title
-        if post_update_request.summary: post.summary = post_update_request.summary
-        if post_update_request.content: post.content = post_update_request.content
-        if post_update_request.category: post.category = post_update_request.category
+        if post_update_request.title: 
+            post.title = post_update_request.title
+        if post_update_request.summary: 
+            post.summary = post_update_request.summary
+        if post_update_request.content: 
+            post.content = post_update_request.content
+        if post_update_request.category: 
+            post.category = post_update_request.category
         
         return self.post_repository.save(post)
