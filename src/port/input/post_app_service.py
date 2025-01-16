@@ -8,3 +8,6 @@ class PostApplicationService:
 
     def create_post(self, post_create_request: PostCreateRequest) -> PostCreateResponse:
         return self.usecase.create_post(post_create_request)
+    
+    def delete_post(self, post_id, authentication_code) -> None:
+        self.usecase.delete_post(post_id, authentication_code)

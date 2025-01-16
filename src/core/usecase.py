@@ -30,3 +30,9 @@ class PostUseCase(PostService):
                                 category=post.category)
         post_create_response = PostCreateResponse.fromEntity(self.post_repository.save(post_entity))
         return post_create_response
+    
+    def delete_post(self, post_id, authentication_code) -> None:
+        if authentication_code != AUTHENTICATION_CODE:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Authentication code not correct.")
+        
+        self.post_repository.delete_by_id(post_id)
