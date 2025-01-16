@@ -4,8 +4,9 @@ from fastapi import status, HTTPException
 from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse
 from port.input.post_service import PostService
 from port.output.post_repository import PostRepository
-import os
 from dotenv import load_dotenv
+import hmac
+import os
 
 load_dotenv()
 
@@ -19,7 +20,7 @@ class PostUseCase(PostService):
         self.post_repository = post_repository
         
     def create_post(self, post_create_request: PostCreateRequest) -> PostCreateResponse:
-        if post_create_request.authentication_code != AUTHENTICATION_CODE:
+        if not hmac.compare_digest(post_create_request.authentication_code, AUTHENTICATION_CODE):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Authentication code not correct.")
         
         post:Post = post_create_request.toDomain()
@@ -32,7 +33,7 @@ class PostUseCase(PostService):
         return post_create_response
     
     def delete_post(self, post_id, authentication_code) -> None:
-        if authentication_code != AUTHENTICATION_CODE:
+        if not hmac.compare_digest(authentication_code, AUTHENTICATION_CODE):
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Authentication code not correct.")
         
         self.post_repository.delete_by_id(post_id)
