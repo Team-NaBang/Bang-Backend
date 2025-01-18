@@ -6,4 +6,4 @@ class VisitApplicationService:
         self.usecase = usecase
         
     def create_visit(self, visit_create_request:VisitCreateRequest) -> None:
-        return self.usecase.create_visit(visit_create_request)
+        self.usecase.create_visit(visit_create_request)
