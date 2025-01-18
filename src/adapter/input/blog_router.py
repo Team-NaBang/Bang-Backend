@@ -18,14 +18,14 @@ def get_post_application_service():
         db.close()
 
 @router.get('/blog')
-def get_blog_main(request:Request, serivce:VisitApplicationService = Depends(get_post_application_service)):
+def get_blog_main(request:Request, service:VisitApplicationService = Depends(get_post_application_service)):
     try:
         forwarded_for = request.headers.get("X-Forwarded-For")
         if forwarded_for:
             client_ip = forwarded_for.split(",")[0].strip()
         else:
             client_ip = request.client.host
-        return serivce.create_visit(VisitCreateRequest(visitor_ip=client_ip))
+        return service.create_visit(VisitCreateRequest(visitor_ip=client_ip))
     except HTTPException as http_ex:
         raise http_ex
     except Exception as e:
