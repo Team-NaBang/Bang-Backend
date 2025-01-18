@@ -13,5 +13,3 @@ class Post:
 class VisitLog:
     def __init__(self, visitor_ip: str):
         self.visitor_ip = visitor_ip
-        
-    visitor_ip: str
