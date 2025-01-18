@@ -1,9 +1,13 @@
-from core.domain import Post
+from core.domain import Post, VisitLog
 from infrastructure.sqlalchemy.model import Post as PostEntity
+from infrastructure.sqlalchemy.model import VisitLog as VisitLogEntity
 from fastapi import status, HTTPException
 from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostDetailResponse, PostUpdateRequest, PostUpdateResponse
+from adapter.dto.visit_dto import VisitCreateRequest
 from port.input.post_service import PostService
+from port.input.visit_service import VisitService
 from port.output.post_repository import PostRepository
+from port.output.visit_repository import VisitRepository
 from dotenv import load_dotenv
 import hmac
 import os
@@ -66,3 +70,14 @@ class PostUseCase(PostService):
     
     def add_like_post(self, post_id: str) -> None:
         self.post_repository.update_post_likes_by_id(post_id)
+
+class VisitUseCase(VisitService):
+    def __init__(self, visit_repository:VisitRepository) -> None:
+        self.visit_repository = visit_repository
+    
+    def create_visit(self, visit_create_request:VisitCreateRequest) -> None:
+        visit_log:VisitLog = visit_create_request.toDomain()
+        
+        visit_log_entity = VisitLogEntity(visitor_ip = visit_log.visitor_ip)
+        
+        self.visit_repository.save(visit_log_entity)
