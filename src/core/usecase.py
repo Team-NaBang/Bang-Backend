@@ -70,6 +70,43 @@ class PostUseCase(PostService):
     
     def add_like_post(self, post_id: str) -> None:
         self.post_repository.update_post_likes_by_id(post_id)
+        
+    def get_all_post(self) -> list:
+        posts = self.post_repository.get_all_post()
+        return [
+            {
+                "id": post.id,
+                "title": post.title,
+                "summary": post.summary,
+                "likes": post.likes_count,
+                "created_at": post.created_at.strftime("%Y-%m-%d") 
+            }
+            for post in posts
+        ]
+    
+    def get_popular_posts(self) -> list:
+        posts = self.post_repository.get_popular_posts()
+        return [
+            {
+                "id":post.id,
+                "title": post.title,
+                "created_at": post.created_at.strftime("%Y-%m-%d"),
+                "likes": post.likes_count
+            }
+            for post in posts
+        ]
+        
+    def get_latest_posts(self) -> list:
+        posts = self.post_repository.get_latest_posts()
+        return [
+            {
+                "id":post.id,
+                "title": post.title,
+                "created_at": post.created_at.strftime("%Y-%m-%d"),
+                "likes": post.likes_count
+            }
+            for post in posts
+        ]
 
 class VisitUseCase(VisitService):
     def __init__(self, visit_repository:VisitRepository) -> None:
@@ -81,3 +118,11 @@ class VisitUseCase(VisitService):
         visit_log_entity = VisitLogEntity(visitor_ip = visit_log.visitor_ip)
         
         self.visit_repository.save(visit_log_entity)
+        
+    def get_visitor_stats(self) -> list:
+        today_visitor = self.visit_repository.get_today_visitor_count()
+        total_visitor = self.visit_repository.get_total_visitor_count()
+        return {
+            "today_visitor":today_visitor,
+            "total_visitor":total_visitor
+        }

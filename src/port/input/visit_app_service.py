@@ -7,3 +7,6 @@ class VisitApplicationService:
         
     def create_visit(self, visit_create_request:VisitCreateRequest) -> None:
         self.usecase.create_visit(visit_create_request)
+        
+    def get_visitor_stats(self) -> list:
+        return self.usecase.get_visitor_stats()

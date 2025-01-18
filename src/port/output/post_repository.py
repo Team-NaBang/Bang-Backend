@@ -17,3 +17,15 @@ class PostRepository(ABC):
     @abstractmethod
     def update_post_likes_by_id(self, post_id:str) -> None:
         raise NotImplementedError
+    
+    @abstractmethod
+    def get_all_post(self) -> list:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def get_popular_posts(self) -> list:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def get_latest_posts(self) -> list:
+        raise NotImplementedError

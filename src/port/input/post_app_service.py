@@ -20,3 +20,13 @@ class PostApplicationService:
 
     def add_like_post(self, post_id:str) -> None:
         self.usecase.add_like_post(post_id)
+
+    def get_all_post(self) -> list:
+        return self.usecase.get_all_post()
+    
+    def get_popular_posts(self) -> list:
+        return self.usecase.get_popular_posts()
+    
+    def get_latest_posts(self) -> list:
+        return self.usecase.get_latest_posts()
+
