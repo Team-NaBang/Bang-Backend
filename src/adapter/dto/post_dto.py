@@ -54,7 +54,7 @@ class PostUpdateResponse(BaseModel):
     category: str
     
     @classmethod
-    def fromEntity(cls, post: PostEntity) -> "PostCreateResponse":
+    def fromEntity(cls, post: PostEntity) -> "PostUpdateResponse":
         return cls(
             id=str(post.id),
             title=post.title,
