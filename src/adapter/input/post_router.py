@@ -10,7 +10,7 @@ from time import time
 
 router = APIRouter(prefix="/posts")
 
-# ✅ Global request rate limit (using cache)
+
 global_request_limit = TTLCache(maxsize=1000, ttl=3600)
 
 def check_global_rate_limit():

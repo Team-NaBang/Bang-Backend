@@ -7,7 +7,7 @@ import logging
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CLIENT_DOMAIN,
+    allow_origins=[CLIENT_DOMAIN],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PATCH", "DELETE"],
     allow_headers=["Content-Type", "authentication-code", "X-Forwarded-For"],
@@ -18,9 +18,9 @@ app.add_middleware(SlowAPIMiddleware)
 @app.middleware("http")
 async def security_headers_middleware(request: Request, call_next):
     response = await call_next(request)
-    response.headers["X-Frame-Options"] = "DENY"  # Clickjacking 방지
-    response.headers["X-Content-Type-Options"] = "nosniff"  # MIME 스니핑 방지
-    response.headers["Content-Security-Policy"] = "default-src 'self'"  # CSP 적용
+    response.headers["X-Frame-Options"] = "DENY"  
+    response.headers["X-Content-Type-Options"] = "nosniff"  
+    response.headers["Content-Security-Policy"] = "default-src 'self'" 
     return response
 
 logging.basicConfig(
