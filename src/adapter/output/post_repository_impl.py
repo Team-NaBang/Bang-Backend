@@ -55,3 +55,33 @@ class PostRepositoryImpl(PostRepository):
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"An error occurred while working on the database: {str(e)}"
             ) from e   
+    
+    def get_all_post(self) -> list:
+        try:
+            return self.db.query(PostEntity).order_by(PostEntity.created_at.desc()).all()
+        except SQLAlchemyError as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"An error occurred while working on the database: {str(e)}"
+            ) from e   
+            
+    def get_popular_posts(self) -> list:
+        try:
+            return self.db.query(PostEntity).order_by(PostEntity.likes_count.desc()).limit(3).all()
+        except SQLAlchemyError as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"An error occurred while working on the database: {str(e)}"
+            ) from e  
+            
+    def get_latest_posts(self) -> list:
+        try:
+            return self.db.query(PostEntity).order_by(PostEntity.created_at.desc()).limit(3).all()
+        except SQLAlchemyError as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"An error occurred while working on the database: {str(e)}"
+            ) from e  

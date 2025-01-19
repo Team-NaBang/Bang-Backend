@@ -1,9 +1,10 @@
 from port.output.visit_repository import VisitRepository
 from sqlalchemy.orm import Session
+from sqlalchemy.sql import func
 from sqlalchemy.exc import SQLAlchemyError
 from infrastructure.sqlalchemy.model import VisitLog as VisitLogEntity
 from fastapi import HTTPException, status
-
+from datetime import datetime
 
 class VisitRepositoryImpl(VisitRepository):
     def __init__(self, db:Session) -> None:
@@ -15,6 +16,34 @@ class VisitRepositoryImpl(VisitRepository):
             self.db.commit()
             self.db.refresh(visit_log)
             return visit_log
+        except SQLAlchemyError as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"An error occurred while working on the database: {str(e)}") from e
+            
+    def get_today_visitor_count(self) -> int:
+        today = datetime.today().date()
+        try:
+            return (
+            self.db.query(func.count())
+            .select_from(
+                self.db.query(func.date(VisitLogEntity.visit_date), VisitLogEntity.visitor_ip)
+                .filter(func.date(VisitLogEntity.visit_date) == today)  
+                .distinct() 
+                .subquery()
+            )
+            .scalar()
+        )
+        except SQLAlchemyError as e:
+            self.db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"An error occurred while working on the database: {str(e)}") from e
+        
+    def get_total_visitor_count(self) -> int:
+        try:
+            return self.db.query(VisitLogEntity.visitor_ip).distinct().count() 
         except SQLAlchemyError as e:
             self.db.rollback()
             raise HTTPException(

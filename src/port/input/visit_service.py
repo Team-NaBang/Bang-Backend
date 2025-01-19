@@ -5,3 +5,7 @@ class VisitService(ABC):
     @abstractmethod
     def create_visit(self, visit_create_request:VisitCreateRequest) -> None:
         raise NotImplementedError
+    
+    @abstractmethod
+    def get_visitor_stats(self) -> list:
+        raise NotImplementedError
