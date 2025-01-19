@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from adapter.dto.post_dto import PostCreateRequest, PostCreateResponse, PostUpdateRequest, PostUpdateResponse, PostDetailResponse
+from adapter.dto.blog_dto import PostDetail, PostSummary
 from typing import List
 
 class PostService(ABC):
@@ -24,13 +25,13 @@ class PostService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_all_post(self) -> list:
+    def get_all_post(self) -> List[PostDetail]:
         raise NotImplementedError
     
     @abstractmethod
-    def get_popular_posts(self) -> list:
+    def get_popular_posts(self) -> List[PostSummary]:
         raise NotImplementedError
     
     @abstractmethod
-    def get_latest_posts(self) -> list:
+    def get_latest_posts(self) -> List[PostSummary]:
         raise NotImplementedError
