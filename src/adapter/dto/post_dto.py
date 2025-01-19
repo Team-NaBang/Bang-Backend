@@ -32,7 +32,7 @@ class PostCreateResponse(BaseModel):
             title=post.title,
             summary=post.summary,
             content=post.content,
-            created_at=post.created_at,
+            created_at=post.created_at.strftime("%Y-%m-%d"),
             likes_count=post.likes_count,
             category = post.category
         )
@@ -52,6 +52,18 @@ class PostUpdateResponse(BaseModel):
     created_at: str
     likes_count: int
     category: str
+    
+    @classmethod
+    def fromEntity(cls, post: PostEntity) -> "PostUpdateResponse":
+        return cls(
+            id=str(post.id),
+            title=post.title,
+            summary=post.summary,
+            content=post.content,
+            created_at=post.created_at.strftime("%Y-%m-%d"),
+            likes_count=post.likes_count,
+            category = post.category
+        )
 
 class PostDetailResponse(BaseModel):
     title: str

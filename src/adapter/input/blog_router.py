@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends, Request, HTTPException, status
 from infrastructure.sqlalchemy.config import SessionLocal
 from adapter.output.post_repository_impl import PostRepositoryImpl
 from adapter.output.visit_repository_impl import VisitRepositoryImpl
-from core.usecase import PostUseCase
-from core.usecase import VisitUseCase
+from core.usecase import PostUseCase, VisitUseCase
 from port.input.post_app_service import PostApplicationService
 from port.input.visit_app_service import VisitApplicationService
 from adapter.dto.visit_dto import VisitCreateRequest
 from adapter.dto.blog_dto import GetBlogMainResponse, VisitorStats
+from infrastructure.slowapi.config import limiter
 
 router = APIRouter()
 
@@ -33,8 +33,12 @@ def get_post_application_service():
 
 @router.get(path='/blog',
             status_code=status.HTTP_200_OK,
-            responses={500: {"description": "Internal Server Error"}},
+            responses={
+                400: {"description": "Bad Request - Invalid Input"},
+                500: {"description": "Internal Server Error"},
+            },
             response_model=GetBlogMainResponse)
+@limiter.limit("30/minute") 
 def get_blog_main(request: Request, 
                 visit_app_service: VisitApplicationService = Depends(get_visit_application_service), 
                 post_app_service: PostApplicationService = Depends(get_post_application_service)):
@@ -58,9 +62,13 @@ def get_blog_main(request: Request,
 
         return GetBlogMainResponse(**sanitized_data)
 
+    except ValueError as err:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(err)) from err
+    except KeyError as err:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Missing required field: {str(err)}") from err
     except HTTPException as http_ex:
-        raise http_ex
+        raise http_ex  # FastAPI의 기본 HTTP 예외 전달
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Error in request process: {str(e)}") from e
+            detail=f"Internal Server Error - {str(e)}") from e
