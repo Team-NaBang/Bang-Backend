@@ -96,3 +96,41 @@ def update_post(request: Request, post_id: str, post_update_request: PostUpdateR
     except Exception as err:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f"Internal Server Error - {str(err)}") from err
+
+@router.get("/{post_id}",
+            status_code=status.HTTP_200_OK,
+            responses={
+                404: {"description": "Post Not Found"},
+                500: {"description": "Internal Server Error"},
+            },
+            response_model=PostDetailResponse)
+@limiter.limit("50/minute") 
+def get_post_detail(request: Request, post_id: str, service: PostApplicationService = Depends(get_post_application_service)):
+    """Retrieve post details by ID"""
+    try:
+        return service.get_post_detail(post_id)
+    except KeyError as err:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid post ID: {str(err)}") from err
+    except Exception as err:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f"Internal Server Error - {str(err)}") from err
+
+@router.post("/{post_id}/likes",
+            status_code=status.HTTP_200_OK,
+            responses={
+                404: {"description": "Post Not Found"},
+                429: {"description": "Too Many Request"},
+                500: {"description": "Internal Server Error"},
+            })
+@limiter.limit("10/minute") 
+def add_like_post(request: Request, post_id: str, service: PostApplicationService = Depends(get_post_application_service)):
+    """Add a like to a post"""
+    check_global_rate_limit()
+    try:
+        service.add_like_post(post_id)
+        return {"message": "Added like successfully"}
+    except KeyError as err:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid post ID: {str(err)}") from err
+    except Exception as err:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            detail=f"Internal Server Error - {str(err)}") from err
