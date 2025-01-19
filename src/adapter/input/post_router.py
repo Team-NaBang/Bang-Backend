@@ -134,3 +134,4 @@ def add_like_post(request: Request, post_id: str, service: PostApplicationServic
     except Exception as err:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f"Internal Server Error - {str(err)}") from err
+        

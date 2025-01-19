@@ -1,0 +1,44 @@
+2025-01-19 11:32:22,380 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'mysql' ([Errno 111] Connection refused)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-19 11:34:03,374 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.DataError) (1265, "Data truncated for column 'id' at row 1")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': '0e185a08-af4a-4f64-9311-8d732ad84320', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)
+2025-01-19 11:36:00,292 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.OperationalError) (2003, "Can't connect to MySQL server on 'mysql' ([Errno 111] Connection refused)")
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-01-19 11:36:08,650 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'mydatabase.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': 'bd4d9e9b-021d-40f3-a77c-6b7354d6e24f', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 11:36:14,299 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'mydatabase.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': '3810b4c1-2eb3-4732-bf78-ed49fa2cbb72', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 11:36:49,567 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'mydatabase.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': 'da838aec-cb82-4ebf-a2fd-fb484bf44d73', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 11:38:23,782 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'mydatabase.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': '047cbb5b-11e8-4606-a9e2-97107818c183', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 13:26:25,969 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'bang.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': '8f7a3fdb-b173-444a-9cb4-022d8be93354', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 13:26:29,777 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'bang.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': '58ddce1a-b8fd-4162-a49f-a4a7473ced7c', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 13:26:30,601 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'bang.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': 'f8bcfe4c-bd12-43a9-9cc9-8bb7645b5f22', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 13:26:31,211 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'bang.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': '8c925046-429c-4d41-8752-dd2b75c0caf1', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2025-01-19 13:26:47,601 - ERROR - ❌ Database error in get_latest_posts(): (pymysql.err.ProgrammingError) (1146, "Table 'bang.visit_log' doesn't exist")
+[SQL: INSERT INTO visit_log (id, visitor_ip) VALUES (%(id)s, %(visitor_ip)s)]
+[parameters: {'id': '23368ffd-a00f-4bcc-8d2e-d4a024596901', 'visitor_ip': IPv4Address('182.214.56.194')}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
