@@ -19,7 +19,7 @@ class VisitRepositoryImpl(VisitRepository):
             return visit_log
         except SQLAlchemyError as e:
             self.db.rollback()
-            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
+            logger.error(f"❌ Database error in save(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - DB Operation Failed"
@@ -40,7 +40,7 @@ class VisitRepositoryImpl(VisitRepository):
             )
         except SQLAlchemyError as e:
             self.db.rollback()
-            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
+            logger.error(f"❌ Database error in get_today_visitor_count(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to fetch visitor count"
@@ -51,7 +51,7 @@ class VisitRepositoryImpl(VisitRepository):
             return self.db.query(VisitLogEntity.visitor_ip).distinct().count()
         except SQLAlchemyError as e:
             self.db.rollback()
-            logger.error(f"❌ Database error in get_latest_posts(): {e}")
+            logger.error(f"❌ Database error in get_total_visitor_count(): {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to fetch total visitor count"

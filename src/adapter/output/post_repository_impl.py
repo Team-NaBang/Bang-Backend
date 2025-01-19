@@ -18,7 +18,7 @@ class PostRepositoryImpl(PostRepository):
             return post
         except SQLAlchemyError as e:
             self.db.rollback()
-            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
+            logger.error(f"❌ Database error in save(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - DB Operation Failed"
@@ -37,7 +37,7 @@ class PostRepositoryImpl(PostRepository):
             self.db.commit()
         except SQLAlchemyError as e:
             self.db.rollback()
-            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
+            logger.error(f"❌ Database error in delete_by_id(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to delete post"
@@ -54,7 +54,7 @@ class PostRepositoryImpl(PostRepository):
             self.db.execute(sql)
             self.db.commit()
         except SQLAlchemyError as e:
-            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
+            logger.error(f"❌ Database error in update_post_likes_by_id(): {e}") 
             self.db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -65,7 +65,7 @@ class PostRepositoryImpl(PostRepository):
         try:
             return self.db.query(PostEntity).order_by(PostEntity.created_at.desc()).all()
         except SQLAlchemyError as e:
-            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
+            logger.error(f"❌ Database error in get_all_post(): {e}") 
             self.db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -77,7 +77,7 @@ class PostRepositoryImpl(PostRepository):
             return self.db.query(PostEntity).order_by(PostEntity.likes_count.desc()).limit(3).all()
         except SQLAlchemyError as e:
             self.db.rollback()
-            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
+            logger.error(f"❌ Database error in get_popular_posts(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to fetch popular posts"
