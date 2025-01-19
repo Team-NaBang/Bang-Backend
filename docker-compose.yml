@@ -4,6 +4,12 @@ services:
   app:
     build: .
     container_name: my_app
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
     ports:
       - "8000:8000"
     depends_on:
