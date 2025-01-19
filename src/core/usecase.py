@@ -8,13 +8,8 @@ from port.input.post_service import PostService
 from port.input.visit_service import VisitService
 from port.output.post_repository import PostRepository
 from port.output.visit_repository import VisitRepository
-from dotenv import load_dotenv
+from infrastructure.env_variable import AUTHENTICATION_CODE
 import hmac
-import os
-
-load_dotenv()
-
-AUTHENTICATION_CODE = os.getenv("AUTHENTICATION_CODE")
 
 if not AUTHENTICATION_CODE:
     raise ValueError("AUTHENTICATION_CODE 환경 변수가 설정되지 않았습니다.")
@@ -57,7 +52,7 @@ class PostUseCase(PostService):
         if post_update_request.category: 
             post.category = post_update_request.category
         
-        return self.post_repository.save(post)
+        return PostUpdateResponse.fromEntity(self.post_repository.save(post))
     
     def get_post_detail(self, post_id: str) -> PostDetailResponse:
         post = self.post_repository.find_by_id(post_id)

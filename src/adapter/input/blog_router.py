@@ -8,6 +8,7 @@ from port.input.post_app_service import PostApplicationService
 from port.input.visit_app_service import VisitApplicationService
 from adapter.dto.visit_dto import VisitCreateRequest
 from adapter.dto.blog_dto import GetBlogMainResponse, VisitorStats
+from infrastructure.slowapi.config import limiter
 
 router = APIRouter()
 
@@ -35,6 +36,7 @@ def get_post_application_service():
             status_code=status.HTTP_200_OK,
             responses={500: {"description": "Internal Server Error"}},
             response_model=GetBlogMainResponse)
+@limiter.limit("30/minute") 
 def get_blog_main(request: Request, 
                 visit_app_service: VisitApplicationService = Depends(get_visit_application_service), 
                 post_app_service: PostApplicationService = Depends(get_post_application_service)):

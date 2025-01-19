@@ -5,10 +5,11 @@ class Category(Enum):
     RECAP = "Recap"
 
 class Post:
-    title: str
-    summary: str
-    content: str
-    category: Category
+    def __init__(self, title: str, summary: str, content: str, category: Category):
+        self.title = title
+        self.summary = summary
+        self.content = content
+        self.category = category
 
 class VisitLog:
     def __init__(self, visitor_ip: str):
