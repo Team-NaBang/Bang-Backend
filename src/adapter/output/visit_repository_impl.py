@@ -5,6 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from infrastructure.sqlalchemy.model import VisitLog as VisitLogEntity
 from fastapi import HTTPException, status
 from datetime import datetime
+from infrastructure.log.logger import logger
 
 class VisitRepositoryImpl(VisitRepository):
     def __init__(self, db: Session) -> None:
@@ -16,8 +17,9 @@ class VisitRepositoryImpl(VisitRepository):
             self.db.commit()
             self.db.refresh(visit_log)
             return visit_log
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             self.db.rollback()
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - DB Operation Failed"
@@ -36,8 +38,9 @@ class VisitRepositoryImpl(VisitRepository):
                 )
                 .scalar()
             )
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             self.db.rollback()
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to fetch visitor count"
@@ -46,8 +49,9 @@ class VisitRepositoryImpl(VisitRepository):
     def get_total_visitor_count(self) -> int:
         try:
             return self.db.query(VisitLogEntity.visitor_ip).distinct().count()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             self.db.rollback()
+            logger.error(f"❌ Database error in get_latest_posts(): {e}")
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to fetch total visitor count"

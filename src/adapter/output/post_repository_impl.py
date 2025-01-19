@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from infrastructure.sqlalchemy.model import Post as PostEntity
 from fastapi import HTTPException, status
-
+from infrastructure.log.logger import logger
 
 class PostRepositoryImpl(PostRepository):
     def __init__(self, db: Session) -> None:
@@ -16,8 +16,9 @@ class PostRepositoryImpl(PostRepository):
             self.db.commit()
             self.db.refresh(post)
             return post
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             self.db.rollback()
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - DB Operation Failed"
@@ -34,8 +35,9 @@ class PostRepositoryImpl(PostRepository):
         try:
             self.db.delete(post)
             self.db.commit()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             self.db.rollback()
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to delete post"
@@ -51,7 +53,8 @@ class PostRepositoryImpl(PostRepository):
             )
             self.db.execute(sql)
             self.db.commit()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             self.db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -61,7 +64,8 @@ class PostRepositoryImpl(PostRepository):
     def get_all_post(self) -> list:
         try:
             return self.db.query(PostEntity).order_by(PostEntity.created_at.desc()).all()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             self.db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -71,8 +75,9 @@ class PostRepositoryImpl(PostRepository):
     def get_popular_posts(self) -> list:
         try:
             return self.db.query(PostEntity).order_by(PostEntity.likes_count.desc()).limit(3).all()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             self.db.rollback()
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to fetch popular posts"
@@ -81,8 +86,9 @@ class PostRepositoryImpl(PostRepository):
     def get_latest_posts(self) -> list:
         try:
             return self.db.query(PostEntity).order_by(PostEntity.created_at.desc()).limit(3).all()
-        except SQLAlchemyError:
+        except SQLAlchemyError as e:
             self.db.rollback()
+            logger.error(f"❌ Database error in get_latest_posts(): {e}") 
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Internal Server Error - Unable to fetch latest posts"
