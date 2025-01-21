@@ -1,12 +1,13 @@
 from core.domain import Post,Category
 from infrastructure.sqlalchemy.model import Post as PostEntity
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, HttpUrl
 from typing import Annotated
 
 class PostCreateRequest(BaseModel):
     title: str = Field(min_length=1, max_length=255)
     summary: str = Field(min_length=1, max_length=255)
     content: str = Field(min_length=1, max_length=20000)
+    thumbnail_url: HttpUrl
     category: Category
     authentication_code: str
 
@@ -14,7 +15,8 @@ class PostCreateRequest(BaseModel):
         return Post(title=self.title, 
                     summary=self.summary, 
                     content=self.content, 
-                    category=self.category)
+                    category=self.category,
+                    thumbnail_url=self.thumbnail_url)
 
 class PostCreateResponse(BaseModel):
     id: str
@@ -24,6 +26,7 @@ class PostCreateResponse(BaseModel):
     created_at: str
     likes_count: int
     category: str
+    thumbnail_url: HttpUrl
     
     @classmethod
     def fromEntity(cls, post: PostEntity) -> "PostCreateResponse":
@@ -34,7 +37,8 @@ class PostCreateResponse(BaseModel):
             content=post.content,
             created_at=post.created_at.strftime("%Y-%m-%d"),
             likes_count=post.likes_count,
-            category = post.category
+            category = post.category,
+            thumbnail_url = post.thumbnail_url
         )
 
 class PostUpdateRequest(BaseModel):
@@ -42,6 +46,7 @@ class PostUpdateRequest(BaseModel):
     summary: Annotated[str | None, Field(default=None, min_length=1, max_length=255)]
     content: Annotated[str | None, Field(default=None, min_length=1, max_length=20000)]
     category: Annotated[Category | None, Field(None)]
+    thumbnail_url: Annotated[HttpUrl | None, Field(None)]
     authentication_code: str
 
 class PostUpdateResponse(BaseModel):
@@ -52,6 +57,7 @@ class PostUpdateResponse(BaseModel):
     created_at: str
     likes_count: int
     category: str
+    thumbnail_url: HttpUrl
     
     @classmethod
     def fromEntity(cls, post: PostEntity) -> "PostUpdateResponse":
@@ -62,7 +68,8 @@ class PostUpdateResponse(BaseModel):
             content=post.content,
             created_at=post.created_at.strftime("%Y-%m-%d"),
             likes_count=post.likes_count,
-            category = post.category
+            category = post.category,
+            thumbnail_url = post.thumbnail_url
         )
 
 class PostDetailResponse(BaseModel):
@@ -72,3 +79,4 @@ class PostDetailResponse(BaseModel):
     created_at: str
     likes_count: int
     category: str
+    thumbnail_url: HttpUrl

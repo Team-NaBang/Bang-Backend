@@ -27,7 +27,8 @@ class PostUseCase(PostService):
         post_entity = PostEntity(title=post.title,
                                 summary=post.summary,
                                 content=post.content,
-                                category=post.category)
+                                category=post.category,
+                                thumbnail_url=post.thumbnail_url)
         post_create_response = PostCreateResponse.fromEntity(self.post_repository.save(post_entity))
         return post_create_response
     
@@ -51,6 +52,8 @@ class PostUseCase(PostService):
             post.content = post_update_request.content
         if post_update_request.category: 
             post.category = post_update_request.category
+        if post_update_request.thumbnail_url:
+            post.thumbnail_url = post_update_request.thumbnail_url
         
         return PostUpdateResponse.fromEntity(self.post_repository.save(post))
     
@@ -61,11 +64,11 @@ class PostUseCase(PostService):
                                 content=post.content,
                                 created_at=post.created_at.strftime("%Y-%m-%d"),
                                 likes_count=post.likes_count,
-                                category=post.category)
+                                category=post.category,
+                                thumbnail_url=post.thumbnail_url)
     
     def add_like_post(self, post_id: str) -> None:
         self.post_repository.update_post_likes_by_id(post_id)
-        
         
     def _format_post_response(self, post) -> dict:
         return {
@@ -77,7 +80,7 @@ class PostUseCase(PostService):
         
     def get_all_post(self) -> list:
         posts = self.post_repository.get_all_post()
-        return [self._format_post_response(post) | {"summary": post.summary} for post in posts]
+        return [self._format_post_response(post) | {"summary": post.summary, "thumbnail_url": post.thumbnail_url} for post in posts]
     
     def get_popular_posts(self) -> list:
         posts = self.post_repository.get_popular_posts()

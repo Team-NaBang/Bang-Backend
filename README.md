@@ -84,6 +84,7 @@ erDiagram
         TIMESTAMP created_at "작성일자"
         INTEGER likes_count "좋아요 수"
         NVARCHAR(50) category "카테고리"
+        NVARCHAR(2083) thumbnail_url "대표 이미지 url"
     }
 
     visit_logs {
