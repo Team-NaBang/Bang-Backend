@@ -10,11 +10,13 @@ class Post(Base):
 
     id = Column(CHAR(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     title = Column(NVARCHAR(255), nullable=False)
-    summary = Column(NVARCHAR(255), nullable=True)
+    summary = Column(NVARCHAR(255), nullable=False)
     content = Column(TEXT, nullable=False)
     created_at = Column(DateTime, default=now.strftime("%Y-%m-%d %H:%M:%S"))
     likes_count = Column(Integer, default=0)
     category = Column(NVARCHAR(50), nullable=False)
+    thumbnail_url = Column(NVARCHAR(2083), nullable=False)
+
 
 class VisitLog(Base):
     __tablename__ = "visit_log"

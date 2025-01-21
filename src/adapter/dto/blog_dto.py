@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, HttpUrl
 from typing import List
 
 class VisitorStats(BaseModel):
@@ -13,6 +13,7 @@ class PostSummary(BaseModel):
 
 class PostDetail(PostSummary):
     summary: str
+    thumbnail_url: HttpUrl
 
 class GetBlogMainResponse(BaseModel):
     all_posts: List[PostDetail] = Field(default_factory=list)
