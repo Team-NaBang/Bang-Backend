@@ -67,7 +67,7 @@ def get_blog_main(request: Request,
     except KeyError as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Missing required field: {str(err)}") from err
     except HTTPException as http_ex:
-        raise http_ex  # FastAPI의 기본 HTTP 예외 전달
+        raise http_ex 
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
