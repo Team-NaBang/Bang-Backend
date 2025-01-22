@@ -52,6 +52,8 @@ def create_post(request: Request, post_create_request: PostCreateRequest, servic
     """Create a new post"""
     try:
         return service.create_post(post_create_request)
+    except HTTPException as err:
+        raise err
     except ValueError as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(err)) from err
     except Exception as err:
@@ -71,6 +73,8 @@ def delete_post(request: Request, post_id: str, authentication_code=Header(None,
     try:
         service.delete_post(post_id, authentication_code)
         return {"message": "Post deleted successfully."}
+    except HTTPException as err:
+        raise err
     except KeyError as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Missing authentication code: {str(err)}") from err
     except Exception as err:
@@ -91,6 +95,8 @@ def update_post(request: Request, post_id: str, post_update_request: PostUpdateR
     """Update an existing post"""
     try:
         return service.update_post(post_id, post_update_request)
+    except HTTPException as err:
+        raise err
     except ValueError as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(err)) from err
     except Exception as err:
@@ -109,6 +115,8 @@ def get_post_detail(request: Request, post_id: str, service: PostApplicationServ
     """Retrieve post details by ID"""
     try:
         return service.get_post_detail(post_id)
+    except HTTPException as err:
+        raise err
     except KeyError as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid post ID: {str(err)}") from err
     except Exception as err:
@@ -129,9 +137,10 @@ def add_like_post(request: Request, post_id: str, service: PostApplicationServic
     try:
         service.add_like_post(post_id)
         return {"message": "Added like successfully"}
+    except HTTPException as err:
+        raise err
     except KeyError as err:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid post ID: {str(err)}") from err
     except Exception as err:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                             detail=f"Internal Server Error - {str(err)}") from err
-        
