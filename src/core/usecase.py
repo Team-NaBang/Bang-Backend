@@ -80,7 +80,7 @@ class PostUseCase(PostService):
         
     def get_all_post(self) -> list:
         posts = self.post_repository.get_all_post()
-        return [self._format_post_response(post) | {"summary": post.summary, "thumbnail_url": post.thumbnail_url} for post in posts]
+        return [self._format_post_response(post) | {"summary": post.summary, "thumbnail_url": post.thumbnail_url, "category": post.category} for post in posts]
     
     def get_popular_posts(self) -> list:
         posts = self.post_repository.get_popular_posts()

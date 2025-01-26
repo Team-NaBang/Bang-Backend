@@ -7,6 +7,11 @@ from fastapi import Request
 from slowapi.middleware import SlowAPIMiddleware
 from infrastructure.log.logger import logger
 from infrastructure.slowapi.config import limiter
+from infrastructure.env_variable import SERVER_ENV
+
+docs_url = None if SERVER_ENV == "Product" else "/docs"
+redoc_url = None if SERVER_ENV == "Product" else "/redoc"
+openapi_url = None if SERVER_ENV == "Product" else "/openapi.json"
 
 app = FastAPI(
     title="My Blog API",
@@ -17,29 +22,34 @@ app = FastAPI(
         "url": "https://iambottle.com",
         "email": "nbhyun0329@gmail.com",
     },
-    docs_url="/docs",  
-    redoc_url="/redoc", 
-    openapi_url="/openapi.json", 
+    docs_url=docs_url,  
+    redoc_url=redoc_url, 
+    openapi_url=openapi_url,  
 )
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[CLIENT_DOMAIN],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
     allow_headers=["Content-Type", "authentication-code", "X-Forwarded-For"],
 )
 
 app.state.limiter = limiter
-
 app.add_middleware(SlowAPIMiddleware)
 
 @app.middleware("http")
 async def security_headers_middleware(request: Request, call_next):
     response = await call_next(request)
-    response.headers["X-Frame-Options"] = "DENY"  
-    response.headers["X-Content-Type-Options"] = "nosniff"  
-    response.headers["Content-Security-Policy"] = "default-src 'self'" 
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; "
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; "
+        "img-src 'self' https://fastapi.tiangolo.com; "
+        "worker-src 'self' blob:;"
+    )
     return response
 
 @app.middleware("http")
@@ -48,7 +58,6 @@ async def log_requests(request: Request, call_next):
     response = await call_next(request)
     logger.info(f"Response: {response.status_code}")
     return response
-
 
 app.include_router(post_router, tags=["Post API"])
 app.include_router(blog_router, tags=["Blog API"])
