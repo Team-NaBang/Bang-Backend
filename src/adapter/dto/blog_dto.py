@@ -14,6 +14,7 @@ class PostSummary(BaseModel):
 class PostDetail(PostSummary):
     summary: str
     thumbnail_url: HttpUrl
+    category: str
 
 class GetBlogMainResponse(BaseModel):
     all_posts: List[PostDetail] = Field(default_factory=list)
