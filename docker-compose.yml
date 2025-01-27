@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    image: nbh3/bang-server:latest
     container_name: my_app
     restart: unless-stopped
     deploy:
@@ -15,9 +15,7 @@ services:
     depends_on:
       - mysql
     env_file:
-      - .env  
-    volumes:
-      - .:/app
+      - .env
 
   mysql:
     image: mysql:8.0
@@ -32,7 +30,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   mysql_data:
