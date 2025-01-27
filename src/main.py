@@ -2,13 +2,22 @@ from fastapi import FastAPI
 from adapter.input.post_router import router as post_router
 from adapter.input.blog_router import router as blog_router
 from fastapi.middleware.cors import CORSMiddleware
-from infrastructure.env_variable import CLIENT_DOMAIN
+from infrastructure.env_variable import CLIENT_DOMAIN, SENTRY_DSN
 from fastapi import Request
 from slowapi.middleware import SlowAPIMiddleware
 from infrastructure.log.logger import logger
 from infrastructure.slowapi.config import limiter
 from infrastructure.env_variable import SERVER_ENV
 from fastapi.responses import Response
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    traces_sample_rate=1.0,
+    _experiments={
+        "continuous_profiling_auto_start": True,
+    },
+)
 
 docs_url = None if SERVER_ENV == "Product" else "/docs"
 redoc_url = None if SERVER_ENV == "Product" else "/redoc"
@@ -39,9 +48,6 @@ app.add_middleware(
 @app.options("/{full_path:path}")
 async def preflight_handler(full_path: str):
     response = Response(status_code=204)
-    response.headers["Access-Control-Allow-Origin"] = CLIENT_DOMAIN
-    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, DELETE, PATCH"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type, authentication-code, X-Forwarded-For"
     return response
 
 app.state.limiter = limiter
