@@ -8,6 +8,7 @@ from slowapi.middleware import SlowAPIMiddleware
 from infrastructure.log.logger import logger
 from infrastructure.slowapi.config import limiter
 from infrastructure.env_variable import SERVER_ENV
+from fastapi.responses import Response
 
 docs_url = None if SERVER_ENV == "Product" else "/docs"
 redoc_url = None if SERVER_ENV == "Product" else "/redoc"
@@ -35,7 +36,16 @@ app.add_middleware(
     allow_headers=["Content-Type", "authentication-code", "X-Forwarded-For"],
 )
 
+@app.options("/{full_path:path}")
+async def preflight_handler(full_path: str):
+    response = Response(status_code=204)
+    response.headers["Access-Control-Allow-Origin"] = CLIENT_DOMAIN
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS, DELETE, PATCH"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, authentication-code, X-Forwarded-For"
+    return response
+
 app.state.limiter = limiter
+
 app.add_middleware(SlowAPIMiddleware)
 
 @app.middleware("http")
