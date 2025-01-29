@@ -9,7 +9,7 @@ class PostSummary(BaseModel):
     id: str
     title: str
     created_at: str
-    likes: int
+    likes_count: int
 
 class PostDetail(PostSummary):
     summary: str
