@@ -75,7 +75,7 @@ class PostUseCase(PostService):
             "id": post.id,
             "title": post.title,
             "created_at": post.created_at.strftime("%Y-%m-%d"),
-            "likes": post.likes_count
+            "likes_count": post.likes_count
         }
         
     def get_all_post(self) -> list:
