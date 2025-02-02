@@ -7,6 +7,10 @@ class VisitRepository(ABC):
         raise NotImplementedError
     
     @abstractmethod
+    def exist_by_ip_and_date(self, ip) -> VisitLog:
+        raise NotImplementedError
+    
+    @abstractmethod
     def get_today_visitor_count(self) -> int:
         raise NotImplementedError
     
