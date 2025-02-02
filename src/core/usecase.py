@@ -10,6 +10,7 @@ from port.output.post_repository import PostRepository
 from port.output.visit_repository import VisitRepository
 from infrastructure.env_variable import AUTHENTICATION_CODE
 import hmac
+from infrastructure.log.logger import logger
 
 if not AUTHENTICATION_CODE:
     raise ValueError("AUTHENTICATION_CODE 환경 변수가 설정되지 않았습니다.")
@@ -94,11 +95,13 @@ class VisitUseCase(VisitService):
     def __init__(self, visit_repository:VisitRepository) -> None:
         self.visit_repository = visit_repository
     
-    def create_visit(self, visit_create_request:VisitCreateRequest) -> None:
-        visit_log:VisitLog = visit_create_request.toDomain()
+    def create_visit(self, visit_create_request: VisitCreateRequest) -> None:
+        visit_log: VisitLog = visit_create_request.toDomain()
         
-        visit_log_entity = VisitLogEntity(visitor_ip = visit_log.visitor_ip)
+        if self.visit_repository.exist_by_ip_and_date(visit_log.visitor_ip):
+            return
         
+        visit_log_entity = VisitLogEntity(visitor_ip=visit_log.visitor_ip)
         self.visit_repository.save(visit_log_entity)
         
     def get_visitor_stats(self) -> dict:
